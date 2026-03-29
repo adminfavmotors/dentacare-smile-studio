@@ -1,16 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
-import { useRevealMotion } from "@/hooks/use-reveal-motion";
 
-const reviews = [
-  { text: "Pierwszy raz w życiu nie bałem się dentysty. Pani Katarzyna jest bardzo profesjonalna i spokojnie wytłumaczyła każdy krok. Polecam serdecznie!", author: "Tomasz W." },
-  { text: "Higienizacja wykonana bardzo dokładnie, bez bólu. Gabinet nowoczesny, personel miły. Umówiłam córkę następnego dnia.", author: "Aleksandra K." },
-  { text: "Implant wszczepiony przez dr Wiśniewskiego — bez komplikacji, cena zgodna z cennikiem. Jestem bardzo zadowolony.", author: "Krzysztof M." },
-  { text: "Łatwe umawianie wizyty online, godziny wieczorne — idealne dla pracujących. Polecam całej rodzinie.", author: "Monika L." },
-  { text: "Wybielanie zębów — efekt przekroczył moje oczekiwania. Dziękuję!", author: "Joanna P." },
-  { text: "Aparat dla córki — dr Kowalska wyjaśniła wszystko rodzicom i dziecku. Poczułyśmy się bezpiecznie.", author: "Beata S." },
-];
+import { reviews, socialProof } from "@/content/clinic";
+import { useRevealMotion } from "@/hooks/use-reveal-motion";
 
 const ReviewsSection = () => {
   const [current, setCurrent] = useState(0);
@@ -73,7 +66,7 @@ const ReviewsSection = () => {
 
           <p className="text-center text-sm text-muted mt-6">
             <Star className="w-4 h-4 fill-accent text-accent inline mr-1" />
-            4,9 / 5 na podstawie 1 200+ opinii Google
+            {socialProof.rating} na podstawie {socialProof.reviewsLabel}
           </p>
         </div>
       </div>

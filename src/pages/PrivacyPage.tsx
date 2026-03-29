@@ -1,22 +1,12 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import { Link } from "react-router-dom";
+import { clinic } from "@/content/clinic";
+import LegalPageLayout from "@/components/legal/LegalPageLayout";
 
 const PrivacyPage = () => (
-  <div className="min-h-screen bg-background">
-    <Navbar />
-    <main className="pt-28 pb-24">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 prose prose-sm prose-headings:font-serif prose-headings:text-foreground prose-p:text-muted prose-a:text-primary">
-        <nav className="text-sm text-muted mb-6 not-prose">
-          <Link to="/" className="hover:text-primary transition-colors">Strona główna</Link>
-          <span className="mx-2">/</span>
-          <span className="text-foreground">Polityka prywatności</span>
-        </nav>
-
+  <LegalPageLayout title="Polityka prywatności">
         <h1>Polityka Prywatności</h1>
 
         <h2>1. Administrator danych osobowych</h2>
-        <p>DentaKraków Klinika Stomatologiczna, ul. Starowiślna 28/3, 31-032 Kraków, NIP: 677-123-45-67, email: <a href="mailto:rejestracja@dentakrakow.pl">rejestracja@dentakrakow.pl</a></p>
+        <p>{clinic.legalName}, {clinic.addressLine1}, {clinic.postalCode} {clinic.city}, NIP: {clinic.nip}, email: <a href={`mailto:${clinic.registrationEmail}`}>{clinic.registrationEmail}</a></p>
 
         <h2>2. Cele i podstawy przetwarzania</h2>
         <ul>
@@ -39,14 +29,11 @@ const PrivacyPage = () => (
         <p>Dane mogą być przekazywane hostingodawcy oraz platformie emailowej — wyłącznie w UE/EOG lub z odpowiednimi zabezpieczeniami.</p>
 
         <h2>7. Inspektor Ochrony Danych</h2>
-        <p>Kontakt: <a href="mailto:iod@dentakrakow.pl">iod@dentakrakow.pl</a></p>
+        <p>Kontakt: <a href={`mailto:${clinic.privacyEmail}`}>{clinic.privacyEmail}</a></p>
 
         <h2>8. Prawo skargi</h2>
         <p>Masz prawo wniesienia skargi do Prezesa UODO, ul. Stawki 2, 00-193 Warszawa.</p>
-      </div>
-    </main>
-    <Footer />
-  </div>
+  </LegalPageLayout>
 );
 
 export default PrivacyPage;

@@ -1,32 +1,7 @@
 import { motion } from "framer-motion";
-import katarzynaImg from "@/assets/doctor-katarzyna.jpg";
-import marcinImg from "@/assets/doctor-marcin.jpg";
-import annaImg from "@/assets/doctor-anna.jpg";
-import { useRevealMotion } from "@/hooks/use-reveal-motion";
 
-const doctors = [
-  {
-    img: katarzynaImg,
-    name: "lek. dent. Katarzyna Nowak",
-    spec: "Stomatologia ogólna, protetyka",
-    edu: "Uniwersytet Jagielloński, specjalizacja PTS",
-    exp: "12 lat doświadczenia",
-  },
-  {
-    img: marcinImg,
-    name: "lek. dent. Marcin Wiśniewski",
-    spec: "Implantologia, chirurgia stomatologiczna",
-    edu: "UM w Krakowie, kursy EAO",
-    exp: "9 lat doświadczenia",
-  },
-  {
-    img: annaImg,
-    name: "lek. dent. Anna Kowalska",
-    spec: "Ortodoncja, stomatologia dziecięca",
-    edu: "UJ CM, certyfikat ortodontyczny",
-    exp: "8 lat doświadczenia",
-  },
-];
+import { doctors } from "@/content/clinic";
+import { useRevealMotion } from "@/hooks/use-reveal-motion";
 
 const DoctorsSection = () => {
   const { getRevealProps } = useRevealMotion();
@@ -46,16 +21,16 @@ const DoctorsSection = () => {
               className="bg-card rounded-card overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300"
             >
               <img
-                src={d.img}
+                src={d.image}
                 alt={`Zdjęcie ${d.name}`}
                 className="w-full aspect-[4/5] object-cover"
                 loading="lazy"
               />
               <div className="p-6">
                 <h3 className="font-serif text-lg font-semibold text-foreground">{d.name}</h3>
-                <p className="text-primary text-sm font-medium mt-1">{d.spec}</p>
-                <p className="text-muted text-sm mt-2">{d.edu}</p>
-                <p className="text-muted text-sm">{d.exp}</p>
+                <p className="text-primary text-sm font-medium mt-1">{d.specialization}</p>
+                <p className="text-muted text-sm mt-2">{d.credentials}</p>
+                <p className="text-muted text-sm">{d.experience}</p>
               </div>
             </motion.div>
           ))}

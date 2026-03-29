@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
+import { clinic, financingProviders } from "@/content/clinic";
 import { useRevealMotion } from "@/hooks/use-reveal-motion";
 import { isValidPolishPhone, simulateLeadSubmit } from "@/lib/forms";
 
@@ -224,12 +225,11 @@ const PricingPage = () => {
               </p>
             </div>
             <div className="flex gap-3 shrink-0">
-              <span className="inline-flex items-center px-4 py-2 rounded-full border border-primary text-sm font-medium text-primary">
-                MediRaty
-              </span>
-              <span className="inline-flex items-center px-4 py-2 rounded-full border border-primary text-sm font-medium text-primary">
-                Twisto
-              </span>
+              {financingProviders.map((provider) => (
+                <span key={provider} className="inline-flex items-center px-4 py-2 rounded-full border border-primary text-sm font-medium text-primary">
+                  {provider}
+                </span>
+              ))}
             </div>
           </div>
 
@@ -241,14 +241,14 @@ const PricingPage = () => {
       {/* Sticky mobile bottom bar */}
       <div className="fixed bottom-0 left-0 right-0 z-40 sm:hidden bg-card shadow-[0_-4px_20px_rgba(0,0,0,0.1)] flex">
         <a
-          href="tel:+48124567890"
+          href={clinic.phoneHref}
           className="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-medium text-primary border-r border-primary/10"
         >
           <Phone className="w-4 h-4" />
           Zadzwoń
         </a>
         <a
-          href="https://wa.me/48124567890"
+          href={clinic.whatsappHref}
           target="_blank"
           rel="noopener noreferrer"
           className="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-medium text-primary"

@@ -1,13 +1,7 @@
 import { motion } from "framer-motion";
-import { Smile, Clock, MessageCircle, Award } from "lucide-react";
-import { useRevealMotion } from "@/hooks/use-reveal-motion";
 
-const benefits = [
-  { icon: Smile, title: "Leczenie bez bólu", desc: "Znieczulenie miejscowe i nowoczesny sprzęt — wizyta bez stresu" },
-  { icon: Clock, title: "Przyjmujemy do 20:00", desc: "Wieczorne godziny — bez kolizji z pracą" },
-  { icon: MessageCircle, title: "Bezpłatna konsultacja", desc: "Pierwsza rozmowa z lekarzem — gratis, bez zobowiązań" },
-  { icon: Award, title: "15 lat doświadczenia", desc: "Lekarze z certyfikatami PTS i wieloletnią praktyką" },
-];
+import { benefits } from "@/content/clinic";
+import { useRevealMotion } from "@/hooks/use-reveal-motion";
 
 const WhyUsSection = () => {
   const { getRevealProps } = useRevealMotion();
@@ -24,7 +18,7 @@ const WhyUsSection = () => {
             >
               <b.icon className="w-8 h-8 text-primary mb-4" />
               <h3 className="font-serif text-lg font-semibold text-foreground mb-2">{b.title}</h3>
-              <p className="text-sm text-muted leading-relaxed">{b.desc}</p>
+              <p className="text-sm text-muted leading-relaxed">{b.description}</p>
             </motion.div>
           ))}
         </div>

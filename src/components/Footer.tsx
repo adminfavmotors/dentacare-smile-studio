@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 
+import { clinic } from "@/content/clinic";
+
 const Footer = () => (
   <footer className="bg-foreground text-primary-foreground py-16">
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -20,8 +22,8 @@ const Footer = () => (
           <ul className="space-y-2 text-sm text-primary-foreground/60">
             <li><Link to="/" className="hover:text-accent transition-colors">Strona główna</Link></li>
             <li><Link to="/cennik" className="hover:text-accent transition-colors">Usługi i cennik</Link></li>
-            <li><a href="/#zespol" className="hover:text-accent transition-colors">Nasz zespół</a></li>
-            <li><a href="/#kontakt" className="hover:text-accent transition-colors">Kontakt</a></li>
+            <li><Link to="/#zespol" className="hover:text-accent transition-colors">Nasz zespół</Link></li>
+            <li><Link to="/#kontakt" className="hover:text-accent transition-colors">Kontakt</Link></li>
           </ul>
         </div>
 
@@ -39,16 +41,16 @@ const Footer = () => (
         <div>
           <h4 className="font-sans font-semibold text-sm mb-4 text-primary-foreground/80">Kontakt</h4>
           <div className="space-y-2 text-sm text-primary-foreground/60">
-            <p>ul. Starowiślna 28/3</p>
-            <p>31-032 Kraków</p>
-            <p><a href="tel:+48124567890" className="hover:text-accent transition-colors">+48 12 456 78 90</a></p>
-            <p><a href="mailto:rejestracja@dentakrakow.pl" className="hover:text-accent transition-colors">rejestracja@dentakrakow.pl</a></p>
+            <p>{clinic.addressLine1}</p>
+            <p>{clinic.postalCode} {clinic.city}</p>
+            <p><a href={clinic.phoneHref} className="hover:text-accent transition-colors">{clinic.phoneDisplay}</a></p>
+            <p><a href={`mailto:${clinic.registrationEmail}`} className="hover:text-accent transition-colors">{clinic.registrationEmail}</a></p>
           </div>
         </div>
       </div>
 
       <div className="mt-12 pt-8 border-t border-primary-foreground/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-primary-foreground/40">
-        <p>© 2026 DentaKraków Klinika Stomatologiczna. Wszelkie prawa zastrzeżone.</p>
+        <p>© 2026 {clinic.legalName}. Wszelkie prawa zastrzeżone.</p>
         <p>Designed in Kraków 🦷</p>
       </div>
     </div>

@@ -1,18 +1,7 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import { Link } from "react-router-dom";
+import LegalPageLayout from "@/components/legal/LegalPageLayout";
 
 const CookiesPage = () => (
-  <div className="min-h-screen bg-background">
-    <Navbar />
-    <main className="pt-28 pb-24">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 prose prose-sm prose-headings:font-serif prose-headings:text-foreground prose-p:text-muted prose-a:text-primary">
-        <nav className="text-sm text-muted mb-6 not-prose">
-          <Link to="/" className="hover:text-primary transition-colors">Strona główna</Link>
-          <span className="mx-2">/</span>
-          <span className="text-foreground">Polityka cookies</span>
-        </nav>
-
+  <LegalPageLayout title="Polityka cookies">
         <h1>Polityka Cookies</h1>
 
         <h2>1. Co to są cookies</h2>
@@ -35,10 +24,7 @@ const CookiesPage = () => (
           <li>Analityczne: 13 miesięcy</li>
           <li>Marketingowe: 6 miesięcy</li>
         </ul>
-      </div>
-    </main>
-    <Footer />
-  </div>
+  </LegalPageLayout>
 );
 
 export default CookiesPage;

@@ -3,6 +3,8 @@ import { ArrowRight, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroImg from "@/assets/hero-dentist.jpg";
 import { Link } from "react-router-dom";
+
+import { clinic, socialProof } from "@/content/clinic";
 import { useRevealMotion } from "@/hooks/use-reveal-motion";
 
 const HeroSection = () => {
@@ -14,34 +16,34 @@ const HeroSection = () => {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Text */}
           <motion.div {...getImmediateRevealProps()} className="order-2 lg:order-1">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-foreground leading-tight text-balance">
-            Twój uśmiech w dobrych rękach
-            <span className="text-primary"> — w samym sercu Krakowa</span>
-          </h1>
-          <p className="mt-6 text-lg text-muted leading-relaxed text-pretty max-w-xl">
-            Nowoczesna stomatologia bez bólu. Przyjazna atmosfera, doświadczeni lekarze i transparentne ceny.
-          </p>
-          {/* Social proof */}
-          <div className="mt-6 flex items-center gap-2 text-sm text-muted">
-            <div className="flex">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-accent text-accent" />
-              ))}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-foreground leading-tight text-balance">
+              Twój uśmiech w dobrych rękach
+              <span className="text-primary"> — w samym sercu Krakowa</span>
+            </h1>
+            <p className="mt-6 text-lg text-muted leading-relaxed text-pretty max-w-xl">
+              Nowoczesna stomatologia bez bólu. Przyjazna atmosfera, doświadczeni lekarze i transparentne ceny.
+            </p>
+            {/* Social proof */}
+            <div className="mt-6 flex items-center gap-2 text-sm text-muted">
+              <div className="flex">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-accent text-accent" />
+                ))}
+              </div>
+              <span>{socialProof.rating} na Google · {socialProof.patientsLabel} · {clinic.city}, {clinic.district}</span>
             </div>
-            <span>4,9/5 na Google · ponad 1 200 zadowolonych pacjentów · Kraków, Starowiślna</span>
-          </div>
-          {/* CTAs */}
-          <div className="mt-8 flex flex-col sm:flex-row gap-4">
-            <Button variant="accent" size="xl" asChild>
-              <a href="#kontakt">
-                Umów wizytę — to proste
-                <ArrowRight className="w-5 h-5" />
-              </a>
-            </Button>
-            <Button variant="accent-outline" size="xl" asChild>
-              <Link to="/cennik">Sprawdź ceny usług</Link>
-            </Button>
-          </div>
+            {/* CTAs */}
+            <div className="mt-8 flex flex-col sm:flex-row gap-4">
+              <Button variant="accent" size="xl" asChild>
+                <a href="#kontakt">
+                  Umów wizytę — to proste
+                  <ArrowRight className="w-5 h-5" />
+                </a>
+              </Button>
+              <Button variant="accent-outline" size="xl" asChild>
+                <Link to="/cennik">Sprawdź ceny usług</Link>
+              </Button>
+            </div>
           </motion.div>
 
           {/* Image */}

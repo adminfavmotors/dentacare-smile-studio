@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
+
+import { clinic } from "@/content/clinic";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useRevealMotion } from "@/hooks/use-reveal-motion";
@@ -51,7 +54,7 @@ const ContactSection = () => {
             </h2>
             <p className="text-muted mb-8">
               Lub zadzwoń teraz:{" "}
-              <a href="tel:+48124567890" className="text-primary font-medium">+48 12 456 78 90</a>
+              <a href={clinic.phoneHref} className="text-primary font-medium">{clinic.phoneDisplay}</a>
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-5">
@@ -126,7 +129,7 @@ const ContactSection = () => {
                 />
                 <span className="text-xs text-muted leading-relaxed">
                   Wyrażam zgodę na przetwarzanie danych osobowych zgodnie z{" "}
-                  <a href="/polityka-prywatnosci" className="text-primary underline">Polityką Prywatności</a>. *
+                  <Link to="/polityka-prywatnosci" className="text-primary underline">Polityką Prywatności</Link>. *
                 </span>
               </label>
 
@@ -135,7 +138,7 @@ const ContactSection = () => {
               </Button>
 
               <p className="text-xs text-muted/70 leading-relaxed mt-2">
-                Administratorem Twoich danych osobowych jest DentaKraków Klinika Stomatologiczna z siedzibą przy ul. Starowiślnej 28/3, 31-032 Kraków. Dane przetwarzane są w celu odpowiedzi na zapytanie (art. 6 ust. 1 lit. b RODO).
+                Administratorem Twoich danych osobowych jest {clinic.legalName} z siedzibą przy {clinic.addressLine1}, {clinic.postalCode} {clinic.city}. Dane przetwarzane są w celu odpowiedzi na zapytanie (art. 6 ust. 1 lit. b RODO).
               </p>
             </form>
           </motion.div>
@@ -145,26 +148,25 @@ const ContactSection = () => {
             <div className="bg-card rounded-card p-8 shadow-card space-y-5">
               <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                <span className="text-sm text-foreground">ul. Starowiślna 28/3, 31-032 Kraków</span>
+                <span className="text-sm text-foreground">{clinic.addressLine1}, {clinic.postalCode} {clinic.city}</span>
               </div>
               <div className="flex items-start gap-3">
                 <Phone className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                <a href="tel:+48124567890" className="text-sm text-foreground hover:text-primary transition-colors">+48 12 456 78 90</a>
+                <a href={clinic.phoneHref} className="text-sm text-foreground hover:text-primary transition-colors">{clinic.phoneDisplay}</a>
               </div>
               <div className="flex items-start gap-3">
                 <Mail className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                <a href="mailto:rejestracja@dentakrakow.pl" className="text-sm text-foreground hover:text-primary transition-colors">rejestracja@dentakrakow.pl</a>
+                <a href={`mailto:${clinic.registrationEmail}`} className="text-sm text-foreground hover:text-primary transition-colors">{clinic.registrationEmail}</a>
               </div>
               <div className="flex items-start gap-3">
                 <Clock className="w-5 h-5 text-primary mt-0.5 shrink-0" />
                 <div className="text-sm text-foreground">
-                  <p>Pn–Pt 8:00–20:00</p>
-                  <p>Sb 9:00–15:00</p>
+                  {clinic.hours.map((hoursLine) => <p key={hoursLine}>{hoursLine}</p>)}
                 </div>
               </div>
               <div className="flex gap-3 pt-2">
                 <a
-                  href="https://wa.me/48124567890"
+                  href={clinic.whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-sm text-primary font-medium hover:underline"
