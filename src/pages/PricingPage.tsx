@@ -4,10 +4,8 @@ import { Link } from "react-router-dom";
 import { Phone, ChevronDown, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import FloatingButtons from "@/components/FloatingButtons";
 import { clinic, financingProviders } from "@/content/clinic";
+import SiteLayout from "@/components/layout/SiteLayout";
 import { useRevealMotion } from "@/hooks/use-reveal-motion";
 import { isValidPolishPhone, simulateLeadSubmit } from "@/lib/forms";
 
@@ -112,10 +110,29 @@ const PricingPage = () => {
 
   const toggle = (i: number) => setOpenIndex(openIndex === i ? -1 : i);
 
-  return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+  const mobileBottomBar = (
+    <div className="fixed bottom-0 left-0 right-0 z-40 flex bg-card shadow-[0_-4px_20px_rgba(0,0,0,0.1)] sm:hidden">
+      <a
+        href={clinic.phoneHref}
+        className="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-medium text-primary border-r border-primary/10"
+      >
+        <Phone className="w-4 h-4" />
+        Zadzwoń
+      </a>
+      <a
+        href={clinic.whatsappHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-medium text-primary"
+      >
+        <MessageCircle className="w-4 h-4" />
+        WhatsApp
+      </a>
+    </div>
+  );
 
+  return (
+    <SiteLayout afterMain={mobileBottomBar} showFloatingButtons>
       {/* Hero */}
       <section className="pt-20 bg-primary-light">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
@@ -142,7 +159,7 @@ const PricingPage = () => {
         </div>
       </div>
 
-      <main className="py-12 sm:py-16">
+      <section className="py-12 sm:py-16">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           {/* Accordion */}
           <div className="space-y-3">
@@ -236,31 +253,8 @@ const PricingPage = () => {
           {/* Mini Contact Form */}
           <MiniContactForm />
         </div>
-      </main>
-
-      {/* Sticky mobile bottom bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 sm:hidden bg-card shadow-[0_-4px_20px_rgba(0,0,0,0.1)] flex">
-        <a
-          href={clinic.phoneHref}
-          className="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-medium text-primary border-r border-primary/10"
-        >
-          <Phone className="w-4 h-4" />
-          Zadzwoń
-        </a>
-        <a
-          href={clinic.whatsappHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-medium text-primary"
-        >
-          <MessageCircle className="w-4 h-4" />
-          WhatsApp
-        </a>
-      </div>
-
-      <Footer />
-      <FloatingButtons />
-    </div>
+      </section>
+    </SiteLayout>
   );
 };
 

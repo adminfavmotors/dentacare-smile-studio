@@ -51,7 +51,14 @@ const Footer = () => (
 
       <div className="mt-12 pt-8 border-t border-primary-foreground/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-primary-foreground/40">
         <p>© 2026 {clinic.legalName}. Wszelkie prawa zastrzeżone.</p>
-        <p>Designed in Kraków 🦷</p>
+        <a
+          href="https://node48.pl"
+          target="_blank"
+          rel="noreferrer"
+          className="hover:text-accent transition-colors"
+        >
+          Realizacja: Node48.pl
+        </a>
       </div>
     </div>
   </footer>
