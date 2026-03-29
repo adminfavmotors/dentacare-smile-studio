@@ -3,20 +3,17 @@ import { ArrowRight, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroImg from "@/assets/hero-dentist.jpg";
 import { Link } from "react-router-dom";
+import { useRevealMotion } from "@/hooks/use-reveal-motion";
 
-const fadeInUp = {
-  initial: { opacity: 0, y: 15 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.5, ease: [0.2, 0.8, 0.2, 1] as [number, number, number, number] },
-};
+const HeroSection = () => {
+  const { getImmediateRevealProps } = useRevealMotion();
 
-const HeroSection = () => (
-  <section className="relative min-h-[90vh] flex items-center pt-20 pb-12 overflow-hidden">
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
-      <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        {/* Text */}
-        <motion.div {...fadeInUp} className="order-2 lg:order-1">
+  return (
+    <section className="relative min-h-[90vh] flex items-center pt-20 pb-12 overflow-hidden">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Text */}
+          <motion.div {...getImmediateRevealProps()} className="order-2 lg:order-1">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-foreground leading-tight text-balance">
             Twój uśmiech w dobrych rękach
             <span className="text-primary"> — w samym sercu Krakowa</span>
@@ -45,26 +42,23 @@ const HeroSection = () => (
               <Link to="/cennik">Sprawdź ceny usług</Link>
             </Button>
           </div>
-        </motion.div>
+          </motion.div>
 
-        {/* Image */}
-        <motion.div
-          {...fadeInUp}
-          transition={{ ...fadeInUp.transition, delay: 0.15 }}
-          className="order-1 lg:order-2"
-        >
-          <div className="relative rounded-card overflow-hidden shadow-card">
-            <img
-              src={heroImg}
-              alt="Lekarz stomatolog w nowoczesnym gabinecie DentaKraków"
-              className="w-full h-auto object-cover aspect-square lg:aspect-[4/5]"
-              loading="eager"
-            />
-          </div>
-        </motion.div>
+          {/* Image */}
+          <motion.div {...getImmediateRevealProps(0.15)} className="order-1 lg:order-2">
+            <div className="relative rounded-card overflow-hidden shadow-card">
+              <img
+                src={heroImg}
+                alt="Lekarz stomatolog w nowoczesnym gabinecie DentaKraków"
+                className="w-full h-auto object-cover aspect-square lg:aspect-[4/5]"
+                loading="eager"
+              />
+            </div>
+          </motion.div>
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default HeroSection;

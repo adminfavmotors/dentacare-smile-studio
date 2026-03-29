@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { useRevealMotion } from "@/hooks/use-reveal-motion";
+import { isValidPolishPhone, simulateLeadSubmit } from "@/lib/forms";
 
 const serviceOptions = [
   "Przegląd", "Higienizacja", "Leczenie", "Wybielanie", "Aparat", "Implant", "Inne",
@@ -10,29 +12,32 @@ const serviceOptions = [
 
 const ContactSection = () => {
   const { toast } = useToast();
+  const { getRevealProps } = useRevealMotion();
   const [loading, setLoading] = useState(false);
   const [consent, setConsent] = useState(false);
   const [honeypot, setHoneypot] = useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (honeypot) return; // spam
     if (!consent) return;
 
     const fd = new FormData(e.currentTarget);
     const phone = fd.get("phone") as string;
-    if (!/^(\+48|48)?[\s-]?\d{3}[\s-]?\d{3}[\s-]?\d{3}$/.test(phone.replace(/\s/g, ""))) {
+    if (!isValidPolishPhone(phone)) {
       toast({ title: "Błąd", description: "Podaj prawidłowy numer telefonu", variant: "destructive" });
       return;
     }
 
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      await simulateLeadSubmit();
       toast({ title: "Dziękujemy! 😊", description: "Oddzwonimy wkrótce." });
       (e.target as HTMLFormElement).reset();
       setConsent(false);
-    }, 1000);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -40,13 +45,7 @@ const ContactSection = () => {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-5 gap-12">
           {/* Form */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-            className="lg:col-span-3"
-          >
+          <motion.div {...getRevealProps()} className="lg:col-span-3">
             <h2 className="text-3xl sm:text-4xl font-serif font-bold text-foreground mb-2">
               Zostaw kontakt — oddzwonimy w ciągu 2 godzin
             </h2>
@@ -142,13 +141,7 @@ const ContactSection = () => {
           </motion.div>
 
           {/* Contact info + map */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-            className="lg:col-span-2 space-y-6"
-          >
+          <motion.div {...getRevealProps(0.1)} className="lg:col-span-2 space-y-6">
             <div className="bg-card rounded-card p-8 shadow-card space-y-5">
               <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-primary mt-0.5 shrink-0" />

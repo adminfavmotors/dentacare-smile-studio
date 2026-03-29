@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { useRevealMotion } from "@/hooks/use-reveal-motion";
 
 const faqs = [
   { q: "Czy leczenie boli?", a: "Stosujemy nowoczesne znieczulenie miejscowe. Większość zabiegów jest całkowicie bezbolesna." },
@@ -12,37 +13,35 @@ const faqs = [
   { q: "Czy można przyjść w nagłym przypadku?", a: "Tak, prosimy o kontakt telefoniczny — postaramy się przyjąć tego samego dnia." },
 ];
 
-const FAQSection = () => (
-  <section className="py-24 bg-primary-light/50">
-    <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-      <motion.div
-        initial={{ opacity: 0, y: 15 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.4 }}
-        className="text-center mb-12"
-      >
-        <h2 className="text-3xl sm:text-4xl font-serif font-bold text-foreground">Najczęstsze pytania</h2>
-      </motion.div>
+const FAQSection = () => {
+  const { getRevealProps } = useRevealMotion();
 
-      <Accordion type="single" collapsible className="space-y-3">
-        {faqs.map((faq, i) => (
-          <AccordionItem
-            key={i}
-            value={`faq-${i}`}
-            className="bg-card rounded-button px-6 shadow-soft border-none"
-          >
-            <AccordionTrigger className="text-left font-sans font-medium text-foreground hover:no-underline py-5">
-              {faq.q}
-            </AccordionTrigger>
-            <AccordionContent className="text-muted leading-relaxed pb-5">
-              {faq.a}
-            </AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
-    </div>
-  </section>
-);
+  return (
+    <section className="py-24 bg-primary-light/50">
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        <motion.div {...getRevealProps()} className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-foreground">Najczęstsze pytania</h2>
+        </motion.div>
+
+        <Accordion type="single" collapsible className="space-y-3">
+          {faqs.map((faq, index) => (
+            <AccordionItem
+              key={faq.q}
+              value={`faq-${index}`}
+              className="bg-card rounded-button px-6 shadow-soft border-none"
+            >
+              <AccordionTrigger className="text-left font-sans font-medium text-foreground hover:no-underline py-5">
+                {faq.q}
+              </AccordionTrigger>
+              <AccordionContent className="text-muted leading-relaxed pb-5">
+                {faq.a}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
+    </section>
+  );
+};
 
 export default FAQSection;

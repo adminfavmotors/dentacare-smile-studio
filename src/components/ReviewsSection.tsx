@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { useRevealMotion } from "@/hooks/use-reveal-motion";
 
 const reviews = [
   { text: "Pierwszy raz w życiu nie bałem się dentysty. Pani Katarzyna jest bardzo profesjonalna i spokojnie wytłumaczyła każdy krok. Polecam serdecznie!", author: "Tomasz W." },
@@ -14,26 +15,21 @@ const reviews = [
 const ReviewsSection = () => {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
+  const { getRevealProps, shouldReduceMotion } = useRevealMotion();
 
   const next = useCallback(() => setCurrent((c) => (c + 1) % reviews.length), []);
   const prev = () => setCurrent((c) => (c - 1 + reviews.length) % reviews.length);
 
   useEffect(() => {
-    if (paused) return;
+    if (paused || shouldReduceMotion) return;
     const t = setInterval(next, 5000);
     return () => clearInterval(t);
-  }, [paused, next]);
+  }, [paused, next, shouldReduceMotion]);
 
   return (
     <section className="py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
-          className="text-center mb-16"
-        >
+        <motion.div {...getRevealProps()} className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-serif font-bold text-foreground">Co mówią nasi pacjenci</h2>
         </motion.div>
 

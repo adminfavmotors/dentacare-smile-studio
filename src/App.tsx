@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import RouteEffects from "@/components/RouteEffects";
 import Index from "./pages/Index.tsx";
 import PricingPage from "./pages/PricingPage.tsx";
 import PrivacyPage from "./pages/PrivacyPage.tsx";
@@ -18,6 +19,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <RouteEffects />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/cennik" element={<PricingPage />} />

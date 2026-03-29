@@ -7,6 +7,8 @@ import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
+import { useRevealMotion } from "@/hooks/use-reveal-motion";
+import { isValidPolishPhone, simulateLeadSubmit } from "@/lib/forms";
 
 const categories = [
   {
@@ -105,6 +107,7 @@ const categories = [
 
 const PricingPage = () => {
   const [openIndex, setOpenIndex] = useState(0);
+  const { getImmediateRevealProps } = useRevealMotion();
 
   const toggle = (i: number) => setOpenIndex(openIndex === i ? -1 : i);
 
@@ -120,12 +123,7 @@ const PricingPage = () => {
             <span className="mx-2">/</span>
             <span className="text-foreground">Usługi i cennik</span>
           </nav>
-          <motion.h1
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="text-4xl sm:text-5xl font-serif font-bold text-foreground mb-3"
-          >
+          <motion.h1 {...getImmediateRevealProps()} className="text-4xl sm:text-5xl font-serif font-bold text-foreground mb-3">
             Usługi i cennik
           </motion.h1>
           <p className="text-lg text-muted max-w-2xl">
@@ -274,23 +272,25 @@ const MiniContactForm = () => {
   const [honeypot, setHoneypot] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (honeypot) return;
     if (!consent) return;
 
     const fd = new FormData(e.currentTarget);
     const phone = fd.get("phone") as string;
-    if (!/^(\+48|48)?[\s-]?\d{3}[\s-]?\d{3}[\s-]?\d{3}$/.test(phone.replace(/\s/g, ""))) {
+    if (!isValidPolishPhone(phone)) {
       toast({ title: "Błąd", description: "Podaj prawidłowy numer telefonu", variant: "destructive" });
       return;
     }
 
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      await simulateLeadSubmit(800);
       setSuccess(true);
-    }, 800);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (success) {
