@@ -2,6 +2,8 @@ import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
 import SiteLayout from "@/components/layout/SiteLayout";
+import Seo from "@/components/seo/Seo";
+import { seoConfig } from "@/content/seo";
 
 const NotFound = () => {
   const location = useLocation();
@@ -12,6 +14,7 @@ const NotFound = () => {
 
   return (
     <SiteLayout>
+      <Seo {...seoConfig.notFound} />
       <section className="px-4 pt-28 pb-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl rounded-card bg-card px-8 py-16 text-center shadow-card sm:px-12">
           <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary/80">Błąd 404</p>

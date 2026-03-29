@@ -1,8 +1,11 @@
 import { clinic } from "@/content/clinic";
+import { seoConfig } from "@/content/seo";
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
+import Seo from "@/components/seo/Seo";
 
 const RegulaminPage = () => (
   <LegalPageLayout title="Regulamin">
+        <Seo {...seoConfig.terms} />
         <h1>Regulamin Świadczenia Usług</h1>
 
         <h2>1. Postanowienia ogólne</h2>

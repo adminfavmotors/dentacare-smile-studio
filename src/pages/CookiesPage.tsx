@@ -1,7 +1,10 @@
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
+import Seo from "@/components/seo/Seo";
+import { seoConfig } from "@/content/seo";
 
 const CookiesPage = () => (
   <LegalPageLayout title="Polityka cookies">
+        <Seo {...seoConfig.cookies} />
         <h1>Polityka Cookies</h1>
 
         <h2>1. Co to są cookies</h2>

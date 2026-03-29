@@ -5,7 +5,9 @@ import { Phone, ChevronDown, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { clinic, financingProviders } from "@/content/clinic";
+import { seoConfig } from "@/content/seo";
 import SiteLayout from "@/components/layout/SiteLayout";
+import Seo from "@/components/seo/Seo";
 import { useRevealMotion } from "@/hooks/use-reveal-motion";
 import { isValidPolishPhone, simulateLeadSubmit } from "@/lib/forms";
 
@@ -133,6 +135,7 @@ const PricingPage = () => {
 
   return (
     <SiteLayout afterMain={mobileBottomBar} showFloatingButtons>
+      <Seo {...seoConfig.pricing} />
       {/* Hero */}
       <section className="pt-20 bg-primary-light">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">

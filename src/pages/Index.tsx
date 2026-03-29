@@ -6,9 +6,12 @@ import ReviewsSection from "@/components/ReviewsSection";
 import FAQSection from "@/components/FAQSection";
 import ContactSection from "@/components/ContactSection";
 import SiteLayout from "@/components/layout/SiteLayout";
+import Seo from "@/components/seo/Seo";
+import { seoConfig } from "@/content/seo";
 
 const Index = () => (
   <SiteLayout showFloatingButtons showCookieConsent>
+    <Seo {...seoConfig.home} />
     <HeroSection />
     <WhyUsSection />
     <ServicesSection />

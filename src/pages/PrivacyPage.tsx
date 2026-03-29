@@ -1,8 +1,11 @@
 import { clinic } from "@/content/clinic";
+import { seoConfig } from "@/content/seo";
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
+import Seo from "@/components/seo/Seo";
 
 const PrivacyPage = () => (
   <LegalPageLayout title="Polityka prywatności">
+        <Seo {...seoConfig.privacy} />
         <h1>Polityka Prywatności</h1>
 
         <h2>1. Administrator danych osobowych</h2>
