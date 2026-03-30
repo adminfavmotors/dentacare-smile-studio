@@ -134,7 +134,7 @@ const PricingPage = () => {
   );
 
   return (
-    <SiteLayout afterMain={mobileBottomBar} showFloatingButtons>
+    <SiteLayout afterMain={mobileBottomBar} floatingButtonsClassName="hidden sm:flex" showFloatingButtons>
       <Seo {...seoConfig.pricing} />
       {/* Hero */}
       <section className="pt-20 bg-primary-light">

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { clinic } from "@/content/clinic";
 
 const navLinks = [
   { label: "Usługi", href: "/#uslugi" },
@@ -22,7 +23,7 @@ const Navbar = () => {
     }
 
     if (href.startsWith("/#")) {
-      return location.pathname === "/";
+      return location.pathname === "/" && location.hash === href.slice(1);
     }
 
     return location.pathname === href;
@@ -80,7 +81,7 @@ const Navbar = () => {
               </Link>
             ))}
             <Button variant="accent" size="lg" asChild>
-              <a href="tel:+48124567890">
+              <a href={clinic.phoneHref}>
                 <Phone className="w-4 h-4" />
                 Zapytaj o wizytę
               </a>
@@ -117,7 +118,7 @@ const Navbar = () => {
                 </Link>
               ))}
               <Button variant="accent" size="lg" className="mt-2" asChild>
-                <a href="tel:+48124567890">
+                <a href={clinic.phoneHref}>
                   <Phone className="w-4 h-4" />
                   Zadzwoń teraz
                 </a>

@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 type SiteLayoutProps = {
   children: ReactNode;
   afterMain?: ReactNode;
+  floatingButtonsClassName?: string;
   mainClassName?: string;
   showCookieConsent?: boolean;
   showFloatingButtons?: boolean;
@@ -17,6 +18,7 @@ type SiteLayoutProps = {
 const SiteLayout = ({
   children,
   afterMain,
+  floatingButtonsClassName,
   mainClassName,
   showCookieConsent = false,
   showFloatingButtons = false,
@@ -34,7 +36,7 @@ const SiteLayout = ({
     </main>
     {afterMain}
     <Footer />
-    {showFloatingButtons ? <FloatingButtons /> : null}
+    {showFloatingButtons ? <FloatingButtons className={floatingButtonsClassName} /> : null}
     {showCookieConsent ? <CookieConsent /> : null}
   </div>
 );

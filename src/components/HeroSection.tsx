@@ -35,10 +35,10 @@ const HeroSection = () => {
             {/* CTAs */}
             <div className="mt-8 flex flex-col sm:flex-row gap-4">
               <Button variant="accent" size="xl" asChild>
-                <a href="#kontakt">
+                <Link to="/#kontakt">
                   Umów wizytę — to proste
                   <ArrowRight className="w-5 h-5" />
-                </a>
+                </Link>
               </Button>
               <Button variant="accent-outline" size="xl" asChild>
                 <Link to="/cennik">Sprawdź ceny usług</Link>
