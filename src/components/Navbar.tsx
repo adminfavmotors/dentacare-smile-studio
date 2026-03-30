@@ -1,21 +1,26 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, Phone, X } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
-import { clinic } from "@/content/clinic";
 
 const navLinks = [
   { label: "Usługi", href: "/#uslugi" },
   { label: "Zespół", href: "/#zespol" },
   { label: "Usługi i cennik", href: "/cennik" },
   { label: "Kontakt", href: "/#kontakt" },
-];
+] as const;
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   const mobileMenuId = "site-mobile-menu";
+
+  const scrollToTop = () => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" });
+  };
 
   const isLinkActive = (href: string) => {
     if (href === "/cennik") {
@@ -41,68 +46,76 @@ const Navbar = () => {
 
   const handleNavClick = (href: string) => {
     setMobileOpen(false);
-    if (href.startsWith("/#")) {
+
+    if (href.startsWith("/#") && location.pathname === "/") {
       const id = href.slice(2);
-      if (location.pathname === "/") {
-        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-      }
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const handleLogoClick = () => {
+    setMobileOpen(false);
+
+    if (location.pathname === "/" && !location.hash) {
+      scrollToTop();
     }
   };
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-background/80 backdrop-blur-xl shadow-soft"
-          : "bg-transparent"
+      className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
+        scrolled ? "bg-background/80 shadow-soft backdrop-blur-xl" : "bg-transparent"
       }`}
     >
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 sm:h-20 items-center justify-between">
-          <Link to="/" className="flex items-center gap-2" aria-label="DentaKraków strona główna">
-            <span className="text-xl sm:text-2xl font-serif font-bold text-primary">
+        <div className="flex h-16 items-center justify-between sm:h-20">
+          <Link
+            to="/"
+            onClick={handleLogoClick}
+            className="flex items-center gap-2"
+            aria-label="DentaKraków strona główna"
+          >
+            <span className="text-xl font-serif font-bold text-primary sm:text-2xl">
               Denta<span className="text-foreground">Kraków</span>
             </span>
           </Link>
 
-          {/* Desktop */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden items-center gap-8 md:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 to={link.href}
                 onClick={() => handleNavClick(link.href)}
                 aria-current={isLinkActive(link.href) ? "page" : undefined}
-                className={`text-sm font-sans font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm ${
+                className={`rounded-sm text-sm font-medium font-sans transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
                   isLinkActive(link.href) ? "text-primary" : "text-foreground/70 hover:text-primary"
                 }`}
               >
                 {link.label}
               </Link>
             ))}
+
             <Button variant="accent" size="lg" asChild>
-              <a href={clinic.phoneHref}>
-                <Phone className="w-4 h-4" />
+              <Link to="/#kontakt" onClick={() => handleNavClick("/#kontakt")}>
+                <Phone className="h-4 w-4" />
                 Zapytaj o wizytę
-              </a>
+              </Link>
             </Button>
           </div>
 
-          {/* Mobile toggle */}
           <button
-            className="md:hidden rounded-md p-2 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-            onClick={() => setMobileOpen(!mobileOpen)}
+            className="rounded-md p-2 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background md:hidden"
+            onClick={() => setMobileOpen((open) => !open)}
             aria-label={mobileOpen ? "Zamknij menu" : "Otwórz menu"}
             aria-expanded={mobileOpen}
             aria-controls={mobileMenuId}
           >
-            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
 
-        {/* Mobile drawer */}
         {mobileOpen && (
-          <div id={mobileMenuId} className="md:hidden pb-6 border-t border-primary/10">
+          <div id={mobileMenuId} className="border-t border-primary/10 pb-6 md:hidden">
             <div className="flex flex-col gap-3 pt-4">
               {navLinks.map((link) => (
                 <Link
@@ -110,18 +123,19 @@ const Navbar = () => {
                   to={link.href}
                   onClick={() => handleNavClick(link.href)}
                   aria-current={isLinkActive(link.href) ? "page" : undefined}
-                  className={`px-2 py-2 text-base font-sans font-medium transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                  className={`rounded-sm px-2 py-2 text-base font-medium font-sans transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
                     isLinkActive(link.href) ? "text-primary" : "text-foreground/70 hover:text-primary"
                   }`}
                 >
                   {link.label}
                 </Link>
               ))}
+
               <Button variant="accent" size="lg" className="mt-2" asChild>
-                <a href={clinic.phoneHref}>
-                  <Phone className="w-4 h-4" />
-                  Zadzwoń teraz
-                </a>
+                <Link to="/#kontakt" onClick={() => handleNavClick("/#kontakt")}>
+                  <Phone className="h-4 w-4" />
+                  Zapytaj o wizytę
+                </Link>
               </Button>
             </div>
           </div>
