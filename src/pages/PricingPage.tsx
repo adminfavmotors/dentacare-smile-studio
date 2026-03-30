@@ -1,19 +1,29 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import type { LucideIcon } from "lucide-react";
+import { Baby, BadgePlus, ChevronDown, MessageCircle, Phone, ShieldCheck, SmilePlus, Sparkles, Stethoscope } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Phone, ChevronDown, MessageCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
-import { clinic, financingProviders } from "@/content/clinic";
-import { seoConfig } from "@/content/seo";
+
 import SiteLayout from "@/components/layout/SiteLayout";
 import Seo from "@/components/seo/Seo";
+import { Button } from "@/components/ui/button";
+import { clinic, financingProviders } from "@/content/clinic";
+import { seoConfig } from "@/content/seo";
 import { useRevealMotion } from "@/hooks/use-reveal-motion";
+import { useToast } from "@/hooks/use-toast";
 import { isValidPolishPhone, simulateLeadSubmit } from "@/lib/forms";
 
-const categories = [
+type PricingItem = [string, string];
+
+type PricingCategory = {
+  icon: LucideIcon;
+  label: string;
+  items: PricingItem[];
+};
+
+const categories: PricingCategory[] = [
   {
-    icon: "🛡️",
+    icon: ShieldCheck,
     label: "Profilaktyka i higiena",
     items: [
       ["Przegląd stomatologiczny", "100 zł"],
@@ -27,7 +37,7 @@ const categories = [
     ],
   },
   {
-    icon: "🦷",
+    icon: Stethoscope,
     label: "Leczenie próchnicy i endodoncja",
     items: [
       ["Wypełnienie kompozytowe — mały ubytek", "200 zł"],
@@ -44,7 +54,7 @@ const categories = [
     ],
   },
   {
-    icon: "✨",
+    icon: Sparkles,
     label: "Stomatologia estetyczna",
     items: [
       ["Wybielanie gabinetowe (Beyond WhiteSpeed)", "800 zł"],
@@ -59,7 +69,7 @@ const categories = [
     ],
   },
   {
-    icon: "🔩",
+    icon: BadgePlus,
     label: "Implanty i protetyka",
     items: [
       ["Implant tytanowy Nobel Biocare (bez korony)", "3 500 zł"],
@@ -76,7 +86,7 @@ const categories = [
     ],
   },
   {
-    icon: "😁",
+    icon: SmilePlus,
     label: "Ortodoncja",
     items: [
       ["Konsultacja ortodontyczna", "150 zł"],
@@ -92,7 +102,7 @@ const categories = [
     ],
   },
   {
-    icon: "👶",
+    icon: Baby,
     label: "Stomatologia dziecięca",
     items: [
       ["Przegląd dziecięcy (do 18 lat)", "80 zł"],
@@ -110,24 +120,24 @@ const PricingPage = () => {
   const [openIndex, setOpenIndex] = useState(0);
   const { getImmediateRevealProps } = useRevealMotion();
 
-  const toggle = (i: number) => setOpenIndex(openIndex === i ? -1 : i);
+  const toggle = (index: number) => setOpenIndex((current) => (current === index ? -1 : index));
 
   const mobileBottomBar = (
     <div className="fixed bottom-0 left-0 right-0 z-40 flex bg-card shadow-[0_-4px_20px_rgba(0,0,0,0.1)] sm:hidden">
       <a
         href={clinic.phoneHref}
-        className="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-medium text-primary border-r border-primary/10"
+        className="flex flex-1 items-center justify-center gap-2 border-r border-primary/10 py-4 text-sm font-medium text-primary"
       >
-        <Phone className="w-4 h-4" />
+        <Phone className="h-4 w-4" />
         Zadzwoń
       </a>
       <a
         href={clinic.whatsappHref}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-medium text-primary"
+        className="flex flex-1 items-center justify-center gap-2 py-4 text-sm font-medium text-primary"
       >
-        <MessageCircle className="w-4 h-4" />
+        <MessageCircle className="h-4 w-4" />
         WhatsApp
       </a>
     </div>
@@ -136,77 +146,85 @@ const PricingPage = () => {
   return (
     <SiteLayout afterMain={mobileBottomBar} floatingButtonsClassName="hidden sm:flex" showFloatingButtons>
       <Seo {...seoConfig.pricing} />
-      {/* Hero */}
-      <section className="pt-20 bg-primary-light">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-          <nav className="text-sm text-muted mb-4">
-            <Link to="/" className="hover:text-primary transition-colors">Strona główna</Link>
+
+      <section className="bg-primary-light pt-20">
+        <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+          <nav className="mb-4 text-sm text-muted">
+            <Link to="/" className="transition-colors hover:text-primary">
+              Strona główna
+            </Link>
             <span className="mx-2">/</span>
             <span className="text-foreground">Usługi i cennik</span>
           </nav>
-          <motion.h1 {...getImmediateRevealProps()} className="text-4xl sm:text-5xl font-serif font-bold text-foreground mb-3">
+
+          <motion.h1 {...getImmediateRevealProps()} className="mb-3 text-4xl font-bold text-foreground sm:text-5xl">
             Usługi i cennik
           </motion.h1>
-          <p className="text-lg text-muted max-w-2xl">
-            Przejrzyste ceny, wysoka jakość. Bezpłatna wycena indywidualna.
-          </p>
+          <p className="max-w-2xl text-lg text-muted">Przejrzyste ceny, wysoka jakość. Bezpłatna wycena indywidualna.</p>
         </div>
       </section>
 
-      {/* Disclaimer banner */}
-      <div className="bg-accent/15 border-y border-accent/20">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-4">
-          <p className="text-sm text-foreground/80 text-center sm:text-left">
-            ⚠️ Podane ceny są orientacyjne. Ostateczna wycena zależy od indywidualnej oceny lekarza podczas bezpłatnej konsultacji. Ceny zawierają VAT.
+      <div className="border-y border-accent/20 bg-accent/15">
+        <div className="mx-auto max-w-5xl px-4 py-4 sm:px-6 lg:px-8">
+          <p className="text-center text-sm text-foreground/80 sm:text-left">
+            ⚠️ Podane ceny są orientacyjne. Ostateczna wycena zależy od indywidualnej oceny lekarza podczas bezpłatnej konsultacji.
+            Ceny zawierają VAT.
           </p>
         </div>
       </div>
 
       <section className="py-12 sm:py-16">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          {/* Accordion */}
           <div className="space-y-3">
-            {categories.map((cat, i) => {
-              const isOpen = openIndex === i;
+            {categories.map((category, index) => {
+              const isOpen = openIndex === index;
+
               return (
-                <div key={cat.label} className="bg-card rounded-card shadow-card overflow-hidden">
+                <div key={category.label} className="overflow-hidden rounded-card bg-card shadow-card">
                   <button
-                    onClick={() => toggle(i)}
-                    className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-primary-light/30 transition-colors"
+                    type="button"
+                    onClick={() => toggle(index)}
+                    className="flex w-full items-center justify-between px-6 py-5 text-left transition-colors hover:bg-primary-light/30"
                     aria-expanded={isOpen}
                   >
                     <span className="flex items-center gap-3">
-                      <span className="text-xl" role="img" aria-hidden="true">{cat.icon}</span>
-                      <span className="font-serif font-bold text-lg text-foreground">{cat.label}</span>
+                      <span className="section-icon-badge h-11 w-11 rounded-xl shadow-none">
+                        <category.icon className="h-5 w-5" aria-hidden="true" />
+                      </span>
+                      <span className="text-lg font-bold text-foreground">{category.label}</span>
                     </span>
                     <ChevronDown
-                      className={`w-5 h-5 text-muted shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                      className={`h-5 w-5 shrink-0 text-muted transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
                     />
                   </button>
 
                   <div
-                    className="transition-all duration-300 ease-in-out overflow-hidden"
+                    className="overflow-hidden transition-all duration-300 ease-in-out"
                     style={{
-                      maxHeight: isOpen ? `${cat.items.length * 60 + 20}px` : "0px",
+                      maxHeight: isOpen ? `${category.items.length * 60 + 20}px` : "0px",
                       opacity: isOpen ? 1 : 0,
                     }}
                   >
-                    {/* Desktop table */}
-                    <table className="w-full hidden sm:table">
+                    <table className="hidden w-full sm:table">
                       <thead>
                         <tr className="border-b border-primary/10">
-                          <th scope="col" className="text-left text-xs font-sans font-semibold text-muted uppercase tracking-wider px-6 py-3">Usługa</th>
-                          <th scope="col" className="text-right text-xs font-sans font-semibold text-muted uppercase tracking-wider px-6 py-3">Cena</th>
+                          <th scope="col" className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted">
+                            Usługa
+                          </th>
+                          <th scope="col" className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-muted">
+                            Cena
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
-                        {cat.items.map(([name, price], j) => (
-                          <tr
-                            key={j}
-                            className="border-b border-primary/5 last:border-0"
-                          >
-                            <td className="text-sm text-foreground px-6 py-3.5 bg-background even:bg-card" scope="row">{name}</td>
-                            <td className={`text-sm font-medium px-6 py-3.5 text-right tabular-nums whitespace-nowrap bg-background even:bg-card ${price === "bezpłatnie" ? "text-primary font-semibold" : "text-primary"}`}>
+                        {category.items.map(([name, price]) => (
+                          <tr key={name} className="border-b border-primary/5 last:border-0">
+                            <td className="bg-background px-6 py-3.5 text-sm text-foreground even:bg-card">{name}</td>
+                            <td
+                              className={`bg-background px-6 py-3.5 text-right text-sm font-medium tabular-nums whitespace-nowrap even:bg-card ${
+                                price === "bezpłatnie" ? "font-semibold text-primary" : "text-primary"
+                              }`}
+                            >
                               {price}
                             </td>
                           </tr>
@@ -214,15 +232,14 @@ const PricingPage = () => {
                       </tbody>
                     </table>
 
-                    {/* Mobile card list */}
-                    <div className="sm:hidden px-4 pb-4 space-y-2">
-                      {cat.items.map(([name, price], j) => (
+                    <div className="space-y-2 px-4 pb-4 sm:hidden">
+                      {category.items.map(([name, price], itemIndex) => (
                         <div
-                          key={j}
-                          className={`flex items-center justify-between px-4 py-3 rounded-lg ${j % 2 === 0 ? "bg-background" : "bg-card"}`}
+                          key={name}
+                          className={`flex items-center justify-between rounded-lg px-4 py-3 ${itemIndex % 2 === 0 ? "bg-background" : "bg-card"}`}
                         >
-                          <span className="text-sm text-foreground pr-4">{name}</span>
-                          <span className={`text-sm font-medium tabular-nums whitespace-nowrap ${price === "bezpłatnie" ? "text-primary font-semibold" : "text-primary"}`}>
+                          <span className="pr-4 text-sm text-foreground">{name}</span>
+                          <span className={`text-sm font-medium tabular-nums whitespace-nowrap ${price === "bezpłatnie" ? "font-semibold text-primary" : "text-primary"}`}>
                             {price}
                           </span>
                         </div>
@@ -234,26 +251,23 @@ const PricingPage = () => {
             })}
           </div>
 
-          {/* Payment / Installments */}
-          <div className="mt-16 bg-primary-light rounded-card p-8 sm:p-10 flex flex-col sm:flex-row items-start sm:items-center gap-6">
+          <div className="mt-16 flex flex-col items-start gap-6 rounded-card bg-primary-light p-8 sm:flex-row sm:items-center sm:p-10">
             <div className="flex-1">
-              <h3 className="font-serif text-xl sm:text-2xl font-bold text-foreground mb-2">
-                Płać wygodnie — raty 0%
-              </h3>
-              <p className="text-sm text-muted leading-relaxed">
-                Zabiegi powyżej 1 000 zł możesz rozłożyć na wygodne raty 0% bez dodatkowych kosztów. Zapytaj na recepcji lub podczas konsultacji.
+              <h3 className="mb-2 text-xl font-bold text-foreground sm:text-2xl">Płać wygodnie — raty 0%</h3>
+              <p className="text-sm leading-relaxed text-muted">
+                Zabiegi powyżej 1 000 zł możesz rozłożyć na wygodne raty 0% bez dodatkowych kosztów. Zapytaj na recepcji lub
+                podczas konsultacji.
               </p>
             </div>
-            <div className="flex gap-3 shrink-0">
+            <div className="flex shrink-0 gap-3">
               {financingProviders.map((provider) => (
-                <span key={provider} className="inline-flex items-center px-4 py-2 rounded-full border border-primary text-sm font-medium text-primary">
+                <span key={provider} className="inline-flex items-center rounded-full border border-primary px-4 py-2 text-sm font-medium text-primary">
                   {provider}
                 </span>
               ))}
             </div>
           </div>
 
-          {/* Mini Contact Form */}
           <MiniContactForm />
         </div>
       </section>
@@ -261,7 +275,6 @@ const PricingPage = () => {
   );
 };
 
-/* ─── Mini Contact Form ─── */
 const MiniContactForm = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
@@ -269,13 +282,14 @@ const MiniContactForm = () => {
   const [honeypot, setHoneypot] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (honeypot) return;
-    if (!consent) return;
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-    const fd = new FormData(e.currentTarget);
-    const phone = fd.get("phone") as string;
+    if (honeypot || !consent) return;
+
+    const formData = new FormData(event.currentTarget);
+    const phone = formData.get("phone") as string;
+
     if (!isValidPolishPhone(phone)) {
       toast({ title: "Błąd", description: "Podaj prawidłowy numer telefonu", variant: "destructive" });
       return;
@@ -292,64 +306,88 @@ const MiniContactForm = () => {
 
   if (success) {
     return (
-      <div className="mt-16 bg-card rounded-card shadow-card p-8 sm:p-10 text-center">
-        <p className="text-primary font-semibold text-lg mb-1">✅ Dziękujemy za wiadomość!</p>
-        <p className="text-muted text-sm">Oddzwonimy w ciągu 2 godzin w godzinach pracy kliniki.</p>
+      <div className="mt-16 rounded-card bg-card p-8 text-center shadow-card sm:p-10">
+        <p className="mb-1 text-lg font-semibold text-primary">Dziękujemy za wiadomość!</p>
+        <p className="text-sm text-muted">Oddzwonimy w ciągu 2 godzin w godzinach pracy kliniki.</p>
       </div>
     );
   }
 
   return (
-    <div className="mt-16 bg-card rounded-card shadow-card p-8 sm:p-10">
-      <h3 className="font-serif text-xl sm:text-2xl font-bold text-foreground mb-1">
-        Nie wiesz od czego zacząć?
-      </h3>
-      <p className="text-muted text-sm mb-6">Napisz — doradzimy bezpłatnie</p>
+    <div className="mt-16 rounded-card bg-card p-8 shadow-card sm:p-10">
+      <h3 className="mb-1 text-xl font-bold text-foreground sm:text-2xl">Nie wiesz od czego zacząć?</h3>
+      <p className="mb-6 text-sm text-muted">Napisz — doradzimy bezpłatnie</p>
 
-      <form onSubmit={handleSubmit} className="grid sm:grid-cols-2 gap-5">
-        <input type="text" name="website" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
+      <form onSubmit={handleSubmit} className="grid gap-5 sm:grid-cols-2">
+        <input
+          type="text"
+          name="website"
+          value={honeypot}
+          onChange={(event) => setHoneypot(event.target.value)}
+          className="hidden"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+        />
 
         <div>
-          <label htmlFor="pf-name" className="block text-sm font-medium text-foreground mb-1">Imię *</label>
+          <label htmlFor="pf-name" className="mb-1 block text-sm font-medium text-foreground">
+            Imię *
+          </label>
           <input
             id="pf-name"
             name="name"
             type="text"
             required
             maxLength={100}
-            className="w-full rounded-button border border-input bg-background px-4 py-3 text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary/20 transition"
+            className="w-full rounded-button border border-input bg-background px-4 py-3 text-foreground transition placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary/20"
             placeholder="Jan"
           />
         </div>
+
         <div>
-          <label htmlFor="pf-phone" className="block text-sm font-medium text-foreground mb-1">Telefon *</label>
+          <label htmlFor="pf-phone" className="mb-1 block text-sm font-medium text-foreground">
+            Telefon *
+          </label>
           <input
             id="pf-phone"
             name="phone"
             type="tel"
             required
             maxLength={20}
-            className="w-full rounded-button border border-input bg-background px-4 py-3 text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary/20 transition"
+            className="w-full rounded-button border border-input bg-background px-4 py-3 text-foreground transition placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary/20"
             placeholder="+48 123 456 789"
           />
         </div>
+
         <div className="sm:col-span-2">
-          <label htmlFor="pf-question" className="block text-sm font-medium text-foreground mb-1">Pytanie / usługa</label>
+          <label htmlFor="pf-question" className="mb-1 block text-sm font-medium text-foreground">
+            Pytanie / usługa
+          </label>
           <textarea
             id="pf-question"
             name="question"
             rows={2}
             maxLength={500}
-            className="w-full rounded-button border border-input bg-background px-4 py-3 text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary/20 transition resize-none"
+            className="w-full resize-none rounded-button border border-input bg-background px-4 py-3 text-foreground transition placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary/20"
             placeholder="Np. Ile kosztuje wybielanie? Chcę umówić wizytę…"
           />
         </div>
 
-        <label className="sm:col-span-2 flex items-start gap-3 cursor-pointer">
-          <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} required className="mt-1 w-4 h-4 accent-primary" />
-          <span className="text-xs text-muted leading-relaxed">
+        <label className="flex cursor-pointer items-start gap-3 sm:col-span-2">
+          <input
+            type="checkbox"
+            checked={consent}
+            onChange={(event) => setConsent(event.target.checked)}
+            required
+            className="mt-1 h-4 w-4 accent-primary"
+          />
+          <span className="text-xs leading-relaxed text-muted">
             Wyrażam zgodę na przetwarzanie danych osobowych zgodnie z{" "}
-            <Link to="/polityka-prywatnosci" className="text-primary underline">Polityką Prywatności</Link>. *
+            <Link to="/polityka-prywatnosci" className="text-primary underline">
+              Polityką Prywatności
+            </Link>
+            . *
           </span>
         </label>
 
