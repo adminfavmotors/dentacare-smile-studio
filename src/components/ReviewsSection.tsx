@@ -30,6 +30,8 @@ const ReviewsSection = () => {
           className="relative max-w-3xl mx-auto"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
+          onFocusCapture={() => setPaused(true)}
+          onBlurCapture={() => setPaused(false)}
         >
           <div className="bg-card rounded-card p-10 sm:p-14 shadow-card min-h-[240px] flex flex-col justify-center text-center">
             <div className="flex justify-center mb-4">
@@ -46,20 +48,22 @@ const ReviewsSection = () => {
           </div>
 
           <div className="flex items-center justify-center gap-4 mt-8">
-            <button onClick={prev} className="p-2 rounded-full hover:bg-primary-light transition-colors" aria-label="Poprzednia opinia">
+            <button type="button" onClick={prev} className="rounded-full p-2 transition-colors hover:bg-primary-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background" aria-label="Poprzednia opinia">
               <ChevronLeft className="w-5 h-5 text-primary" />
             </button>
             <div className="flex gap-2">
               {reviews.map((_, i) => (
                 <button
+                  type="button"
                   key={i}
                   onClick={() => setCurrent(i)}
-                  className={`w-2 h-2 rounded-full transition-all ${i === current ? "bg-primary w-6" : "bg-primary/20"}`}
+                  className={`h-2 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${i === current ? "bg-primary w-6" : "w-2 bg-primary/20"}`}
                   aria-label={`Opinia ${i + 1}`}
+                  aria-pressed={i === current}
                 />
               ))}
             </div>
-            <button onClick={next} className="p-2 rounded-full hover:bg-primary-light transition-colors" aria-label="Następna opinia">
+            <button type="button" onClick={next} className="rounded-full p-2 transition-colors hover:bg-primary-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background" aria-label="Następna opinia">
               <ChevronRight className="w-5 h-5 text-primary" />
             </button>
           </div>

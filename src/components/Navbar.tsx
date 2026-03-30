@@ -14,6 +14,19 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const mobileMenuId = "site-mobile-menu";
+
+  const isLinkActive = (href: string) => {
+    if (href === "/cennik") {
+      return location.pathname === "/cennik";
+    }
+
+    if (href.startsWith("/#")) {
+      return location.pathname === "/";
+    }
+
+    return location.pathname === href;
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
@@ -58,7 +71,10 @@ const Navbar = () => {
                 key={link.href}
                 to={link.href}
                 onClick={() => handleNavClick(link.href)}
-                className="text-sm font-sans font-medium text-foreground/70 hover:text-primary transition-colors"
+                aria-current={isLinkActive(link.href) ? "page" : undefined}
+                className={`text-sm font-sans font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm ${
+                  isLinkActive(link.href) ? "text-primary" : "text-foreground/70 hover:text-primary"
+                }`}
               >
                 {link.label}
               </Link>
@@ -73,9 +89,11 @@ const Navbar = () => {
 
           {/* Mobile toggle */}
           <button
-            className="md:hidden p-2 text-foreground"
+            className="md:hidden rounded-md p-2 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? "Zamknij menu" : "Otwórz menu"}
+            aria-expanded={mobileOpen}
+            aria-controls={mobileMenuId}
           >
             {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -83,14 +101,17 @@ const Navbar = () => {
 
         {/* Mobile drawer */}
         {mobileOpen && (
-          <div className="md:hidden pb-6 border-t border-primary/10">
+          <div id={mobileMenuId} className="md:hidden pb-6 border-t border-primary/10">
             <div className="flex flex-col gap-3 pt-4">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   to={link.href}
                   onClick={() => handleNavClick(link.href)}
-                  className="text-base font-sans font-medium text-foreground/70 hover:text-primary px-2 py-2 transition-colors"
+                  aria-current={isLinkActive(link.href) ? "page" : undefined}
+                  className={`px-2 py-2 text-base font-sans font-medium transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                    isLinkActive(link.href) ? "text-primary" : "text-foreground/70 hover:text-primary"
+                  }`}
                 >
                   {link.label}
                 </Link>
